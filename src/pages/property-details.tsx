@@ -1,16 +1,11 @@
 // TODO : Implement Google Maps API for property location
-// TODO : Implement rating system
-// NOTE : Edit and Delete CustomButton code commented out and now handled by refine buttons
-// TODO : Clean up Edit and Delete CustomButton code after initial commit
+// TODO : Implement rating system and move rating values to constants
 // TODO : Add a link to the agents avatar that navigates them to their profile
 // TODO : Populate agents phone number and location from db
 
 /* eslint-disable no-restricted-globals */
 import { useParams, useNavigate } from '@pankod/refine-react-router-v6';
-import {
-  // useDelete,
-  useGetIdentity, useShow
-} from '@pankod/refine-core';
+import {  useGetIdentity, useShow } from '@pankod/refine-core';
 import { Typography, Box, Stack, DeleteButton, EditButton } from '@pankod/refine-mui';
 import { ChatBubble, Delete, Edit, Phone, Place, Star } from '@mui/icons-material';
 
@@ -24,7 +19,6 @@ const PropertyDetails = () => {
   const navigate = useNavigate();
   const { data: user } = useGetIdentity();
   const { queryResult } = useShow();
-  // const { mutate } = useDelete();
   const { id } = useParams();
 
   const { data, isLoading, isError } = queryResult;
@@ -35,20 +29,6 @@ const PropertyDetails = () => {
   if (isError) return <Box>Something went wrong!</Box>;
 
   const isCurrentUser = user.email === propertyDetails.creator.email;
-
-  // const handleDeleteProperty = () => {
-  //   const response = confirm('Are you sure you want to delete this property?');
-  //   if (response) {
-  //     mutate({
-  //       resource: 'properties',
-  //       id: id as string,
-  //     }, {
-  //       onSuccess: () => {
-  //         navigate('/properties');
-  //       },
-  //     });
-  //   }
-  // };
 
   return (
     <Box
@@ -189,18 +169,6 @@ const PropertyDetails = () => {
                   }
                 }}
               />
-              {/* <CustomButton
-                title={!isCurrentUser ? 'Message' : 'Edit'}
-                backgroundColor="#475BE8"
-                color="#FCFCFC"
-                fullWidth
-                icon={!isCurrentUser ? <ChatBubble /> : <Edit />}
-                handleClick={() => {
-                  if (isCurrentUser) {
-                    navigate(`/properties/edit/${propertyDetails._id}`);
-                  }
-                }}
-              /> */}
               <DeleteButton
                 variant='contained'
                 size="medium"
@@ -237,16 +205,6 @@ const PropertyDetails = () => {
                   navigate('/properties');
                 }}
               />
-              {/* <CustomButton
-                title={!isCurrentUser ? 'Call' : 'Delete'}
-                backgroundColor={!isCurrentUser ? '#2ED480' : '#d42e2e'}
-                color="#FCFCFC"
-                fullWidth
-                icon={!isCurrentUser ? <Phone /> : <Delete />}
-                handleClick={() => {
-                  if (isCurrentUser) handleDeleteProperty();
-                }}
-              /> */}
             </Stack>
           </Stack>
           <Stack>
