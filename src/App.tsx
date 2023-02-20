@@ -5,6 +5,7 @@
 // TODO : Go through project and covert components to styled components where necessary
 // TODO : Update login function to use axios instead of fetch
 // TODO : Add Theme Switch and custom MUI Theme
+// TODO : Add loading and error components
 
 import { Refine, AuthProvider } from "@pankod/refine-core";
 import {

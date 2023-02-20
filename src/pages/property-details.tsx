@@ -2,10 +2,12 @@
 // TODO : Implement rating system and move rating values to constants
 // TODO : Add a link to the agents avatar that navigates them to their profile
 // TODO : Populate agents phone number and location from db
+// TODO : Add edit button to card to populate phone number and location details
 
 /* eslint-disable no-restricted-globals */
+import { useMemo } from 'react';
 import { useParams, useNavigate } from '@pankod/refine-react-router-v6';
-import {  useGetIdentity, useShow } from '@pankod/refine-core';
+import { useGetIdentity, useShow } from '@pankod/refine-core';
 import { Typography, Box, Stack, DeleteButton, EditButton } from '@pankod/refine-mui';
 import { ChatBubble, Delete, Edit, Phone, Place, Star } from '@mui/icons-material';
 
@@ -23,7 +25,10 @@ const PropertyDetails = () => {
 
   const { data, isLoading, isError } = queryResult;
 
-  const propertyDetails = data?.data ?? {};
+  const propertyDetails = useMemo(
+    () => data?.data ?? {},
+    [data?.data]
+  );
 
   if (isLoading) return <Box>Loading...</Box>;
   if (isError) return <Box>Something went wrong!</Box>;
@@ -139,72 +144,95 @@ const PropertyDetails = () => {
               </Typography>
             </Stack>
             <Stack width="100%" mt="25px" direction="row" flexWrap="wrap" justifyContent="space-evenly" gap={2}>
-              <EditButton
-                variant='contained'
-                size="medium"
-                recordItemId={id}
-                title={!isCurrentUser ? 'Message' : 'Edit'}
-                disableElevation
-                startIcon={!isCurrentUser ? <ChatBubble /> : <Edit />}
-                fullWidth
-                sx={{
-                  flex: 1,
-                  padding: "10px 15px",
-                  width: "100%",
-                  minWidth: 130,
-                  backgroundColor: "#475BE8",
-                  color: "#FCFCFC",
-                  fontSize: 16,
-                  fontWeight: 600,
-                  gap: "10px",
-                  textTransform: "capitalize",
-                  "&:hover": {
-                    opacity: 0.9,
+              {isCurrentUser ? (
+                <EditButton
+                  variant='contained'
+                  size="medium"
+                  recordItemId={id}
+                  title={!isCurrentUser ? 'Message' : 'Edit'}
+                  disableElevation
+                  startIcon={!isCurrentUser ? <ChatBubble /> : <Edit />}
+                  fullWidth
+                  sx={{
+                    flex: 1,
+                    padding: "10px 15px",
+                    width: "100%",
+                    minWidth: 130,
                     backgroundColor: "#475BE8",
-                  }
-                }}
-                onClick={() => {
-                  if (isCurrentUser) {
-                    navigate(`/properties/edit/${propertyDetails._id}`);
-                  }
-                }}
-              />
-              <DeleteButton
-                variant='contained'
-                size="medium"
-                resourceNameOrRouteName="properties"
-                recordItemId={id}
-                title={!isCurrentUser ? 'Call' : 'Delete'}
-                confirmTitle="Are you sure you want to delete this property?"
-                confirmOkText="Yes"
-                confirmCancelText="No"
-                disableElevation
-                startIcon={!isCurrentUser ? <Phone /> : <Delete />}
-                fullWidth
-                sx={{
-                  flex: 1,
-                  padding: "10px 15px",
-                  width: "100%",
-                  minWidth: 130,
-                  backgroundColor: !isCurrentUser
-                    ? '#2ED480'
-                    : '#d42e2e',
-                  color: "#FCFCFC",
-                  fontSize: 16,
-                  fontWeight: 600,
-                  gap: "10px",
-                  textTransform: "capitalize",
-                  "&:hover": {
-                    opacity: 0.9,
-                    backgroundColor: !isCurrentUser
-                      ? '#2ED480'
-                      : '#d42e2e',
-                  }
-                }}
-                onSuccess={() => {
-                  navigate('/properties');
-                }}
-              />
+                    color: "#FCFCFC",
+                    fontSize: 16,
+                    fontWeight: 600,
+                    gap: "10px",
+                    textTransform: "capitalize",
+                    "&:hover": {
+                      opacity: 0.9,
+                      backgroundColor: "#475BE8",
+                    }
+                  }}
+                  onClick={() => {
+                    if (isCurrentUser) {
+                      navigate(`/properties/edit/${propertyDetails._id}`);
+                    }
+                  }}
+                />
+              ) : (
+                <CustomButton
+                  title={'Message'}
+                  backgroundColor="#475BE8"
+                  color="#FCFCFC"
+                  fullWidth
+                  icon={<ChatBubble />}
+                  handleClick={() => {
+                    if (isCurrentUser) {
+                      navigate(`/properties/edit/${propertyDetails._id}`);
+                    }
+                  }}
+                />
+              )}
+              {isCurrentUser ? (
+                <DeleteButton
+                  variant='contained'
+                  size="medium"
+                  resourceNameOrRouteName="properties"
+                  recordItemId={id}
+                  title={'Delete'}
+                  confirmTitle="Are you sure you want to delete this property?"
+                  confirmOkText="Yes"
+                  confirmCancelText="No"
+                  disableElevation
+                  startIcon={<Delete />}
+                  fullWidth
+                  sx={{
+                    flex: 1,
+                    padding: "10px 15px",
+                    width: "100%",
+                    minWidth: 130,
+                    backgroundColor: '#d42e2e',
+                    color: "#FCFCFC",
+                    fontSize: 16,
+                    fontWeight: 600,
+                    gap: "10px",
+                    textTransform: "capitalize",
+                    "&:hover": {
+                      opacity: 0.9,
+                      backgroundColor: '#d42e2e',
+                    }
+                  }}
+                  onSuccess={() => {
+                    navigate('/properties');
+                  }} />
+              ) : (
+                <CustomButton
+                  title={'Call'}
+                  backgroundColor={'#2ED480'}
+                  color="#FCFCFC"
+                  fullWidth
+                  icon={<Phone />}
+                  handleClick={() => {
+                    // if (isCurrentUser) handleDeleteProperty();
+                  }}
+                />
+              )}
             </Stack>
           </Stack>
           <Stack>

@@ -95,7 +95,6 @@ const Profile = ({ type, name, avatar, email, properties }: ProfileProps) => (
                       fontSize={14}
                       color="#11142D"
                     >
-                      65 Wolfpit Avenue
                       Norwalk, Connecticut 06851
                     </Typography>
                   </Box>
@@ -126,7 +125,7 @@ const Profile = ({ type, name, avatar, email, properties }: ProfileProps) => (
                         color="#11142D"
                         noWrap
                       >
-                        +1-203-451-9124
+                        +1-203-555-1234
                       </Typography>
                     </Box>
                   </Stack>
