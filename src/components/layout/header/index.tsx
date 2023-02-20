@@ -1,25 +1,35 @@
-import React, { useContext } from "react";
+// TODO : Add a link to the users avatar that navigates them to their profile
+// TODO : Clean up theme switch code or implement mui theme 
+// NOTE : The theme switch IconButton is commented out - light theme only currently
+
+import React, {
+  // useContext
+} from "react";
 import { useGetIdentity } from "@pankod/refine-core";
 import {
   AppBar,
-  IconButton,
+  // IconButton,
   Stack,
   Toolbar,
   Typography,
   Avatar,
 } from "@pankod/refine-mui";
-import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
+// import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
 
-import { ColorModeContext } from "contexts";
+// import { ColorModeContext } from "contexts";
 
+/**
+ * Header
+ */
 export const Header: React.FC = () => {
-  const { mode, setMode } = useContext(ColorModeContext);
+  // const { mode, setMode } = useContext(ColorModeContext);
 
   const { data: user } = useGetIdentity();
+
   const shouldRenderHeader = true; // since we are using the dark/light toggle; we don't need to check if user is logged in or not.
 
   return shouldRenderHeader ? (
-    <AppBar color="default" position="sticky" elevation={1}>
+    <AppBar color="default" position="sticky" elevation={0} sx={{ background: "#FCFCFC" }}>
       <Toolbar>
         <Stack
           direction="row"
@@ -27,13 +37,13 @@ export const Header: React.FC = () => {
           justifyContent="flex-end"
           alignItems="center"
         >
-          <IconButton
+          {/* <IconButton
             onClick={() => {
               setMode();
             }}
           >
             {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
-          </IconButton>
+          </IconButton> */}
           <Stack
             direction="row"
             gap="16px"
@@ -41,7 +51,9 @@ export const Header: React.FC = () => {
             justifyContent="center"
           >
             {user?.name ? (
-              <Typography variant="subtitle2">{user?.name}</Typography>
+              <Typography variant="subtitle2">
+                {user?.name}
+              </Typography>
             ) : null}
             {user?.avatar ? (
               <Avatar src={user?.avatar} alt={user?.name} />

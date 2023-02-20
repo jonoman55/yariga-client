@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -36,9 +36,12 @@ import {
 
 import { Title as DefaultTitle } from "../title";
 
+/**
+ * Sidebar
+ */
 export const Sider: typeof DefaultSider = ({ render }) => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [opened, setOpened] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [opened, setOpened] = useState<boolean>(false);
 
   const drawerWidth = () => {
     if (collapsed) return 64;
@@ -57,7 +60,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
 
   const [open, setOpen] = useState<{ [k: string]: any }>({});
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOpen((previousOpen) => {
       const previousOpenKeys: string[] = Object.keys(previousOpen);
       const uniqueKeys = new Set([...previousOpenKeys, ...defaultOpenKeys]);
@@ -71,14 +74,17 @@ export const Sider: typeof DefaultSider = ({ render }) => {
   const RenderToTitle = Title ?? DefaultTitle;
 
   const handleClick = (key: string) => {
-    setOpen({ ...open, [key]: !open[key] });
+    setOpen({
+      ...open,
+      [key]: !open[key]
+    });
   };
 
   const renderTreeView = (tree: ITreeMenu[], selectedKey: string) => {
     return tree.map((item: ITreeMenu) => {
       const { icon, label, route, name, children, parentName } = item;
+      
       const isOpen = open[route || ""] || false;
-
       const isSelected = route === selectedKey;
       const isNested = !(parentName === undefined);
 
@@ -92,7 +98,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
               resource: item,
             }}
           >
-            <div key={route}>
+            <Box component="div" key={route}>
               <Tooltip
                 title={label ?? name}
                 placement="right"
@@ -134,8 +140,10 @@ export const Sider: typeof DefaultSider = ({ render }) => {
                     primary={label}
                     primaryTypographyProps={{
                       noWrap: true,
-                      fontSize: "14px",
-                      fontWeight: isSelected ? "bold" : "normal",
+                      fontSize: "16px",
+                      fontWeight: isSelected
+                        ? "bold"
+                        : "normal",
                     }}
                   />
                   {!collapsed && (isOpen ? <ExpandLess /> : <ExpandMore />)}
@@ -148,10 +156,10 @@ export const Sider: typeof DefaultSider = ({ render }) => {
                   </MuiList>
                 </Collapse>
               )}
-            </div>
+            </Box>
           </CanAccess>
         );
-      }
+      };
 
       return (
         <CanAccess
@@ -178,18 +186,28 @@ export const Sider: typeof DefaultSider = ({ render }) => {
                 py: isNested ? 1.25 : 1,
                 "&.Mui-selected": {
                   "&:hover": {
-                    backgroundColor: "transparent",
+                    backgroundColor: isSelected
+                      ? "#1e36e8"
+                      : "transparent",
                   },
-                  backgroundColor: "transparent",
+                  backgroundColor: isSelected
+                    ? "#475be8"
+                    : "transparent",
                 },
                 justifyContent: "center",
+                margin: "10px auto",
+                borderRadius: "12px",
+                minHeight: "56px",
+                width: "90%"
               }}
             >
               <ListItemIcon
                 sx={{
                   justifyContent: "center",
                   minWidth: 36,
-                  color: "primary.contrastText",
+                  color: isSelected
+                    ? "#fff"
+                    : "#808191",
                 }}
               >
                 {icon ?? <ListOutlined />}
@@ -198,8 +216,14 @@ export const Sider: typeof DefaultSider = ({ render }) => {
                 primary={label}
                 primaryTypographyProps={{
                   noWrap: true,
-                  fontSize: "14px",
-                  fontWeight: isSelected ? "bold" : "normal",
+                  fontSize: "16px",
+                  fontWeight: isSelected
+                    ? "bold"
+                    : "normal",
+                  color: isSelected
+                    ? "#fff"
+                    : "#808191",
+                  marginLeft: "10px",
                 }}
               />
             </ListItemButton>
@@ -240,7 +264,9 @@ export const Sider: typeof DefaultSider = ({ render }) => {
             sx={{
               justifyContent: "center",
               minWidth: 36,
-              color: "primary.contrastText",
+              color: "#808191",
+              marginLeft: "6px",
+              marginRight: "14px",
             }}
           >
             <Dashboard />
@@ -249,8 +275,10 @@ export const Sider: typeof DefaultSider = ({ render }) => {
             primary={translate("dashboard.title", "Dashboard")}
             primaryTypographyProps={{
               noWrap: true,
-              fontSize: "14px",
-              fontWeight: selectedKey === "/" ? "bold" : "normal",
+              fontSize: "16px",
+              fontWeight: selectedKey === "/"
+                ? "bold"
+                : "normal",
             }}
           />
         </ListItemButton>
@@ -268,13 +296,19 @@ export const Sider: typeof DefaultSider = ({ render }) => {
       <ListItemButton
         key="logout"
         onClick={() => mutateLogout()}
-        sx={{ justifyContent: "center" }}
+        sx={{
+          justifyContent: "center",
+          margin: "10px auto",
+          borderRadius: "12px",
+          minHeight: "56px",
+          width: "90%"
+        }}
       >
         <ListItemIcon
           sx={{
             justifyContent: "center",
             minWidth: 36,
-            color: "primary.contrastText",
+            color: "#808191",
           }}
         >
           <Logout />
@@ -283,7 +317,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
           primary={t("buttons.logout", "Logout")}
           primaryTypographyProps={{
             noWrap: true,
-            fontSize: "14px",
+            fontSize: "16px",
           }}
         />
       </ListItemButton>
@@ -302,22 +336,25 @@ export const Sider: typeof DefaultSider = ({ render }) => {
       });
     }
     return (
-      <>
+      <React.Fragment>
         {dashboard}
         {items}
         {logout}
-      </>
+      </React.Fragment>
     );
   };
 
   const drawer = (
-    <MuiList disablePadding sx={{ mt: 1, color: "primary.contrastText" }}>
+    <MuiList disablePadding sx={{
+      mt: 1,
+      color: "#808191"
+    }}>
       {renderSider()}
     </MuiList>
   );
 
   return (
-    <>
+    <React.Fragment>
       <Box
         sx={{
           width: { xs: drawerWidth() },
@@ -348,7 +385,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
             display: { sm: "block", md: "none" },
             "& .MuiDrawer-paper": {
               width: 256,
-              bgcolor: "secondary.main",
+              bgcolor: "#FCFCFC",
             },
           }}
         >
@@ -366,12 +403,12 @@ export const Sider: typeof DefaultSider = ({ render }) => {
         </Drawer>
         <Drawer
           variant="permanent"
-          PaperProps={{ elevation: 1 }}
+          PaperProps={{ elevation: 0 }}
           sx={{
             display: { xs: "none", md: "block" },
             "& .MuiDrawer-paper": {
               width: drawerWidth,
-              bgcolor: "secondary.main",
+              bgcolor: "#FCFCFC",
               overflow: "hidden",
               transition: "width 200ms cubic-bezier(0.4, 0, 0.6, 1) 0ms",
             },
@@ -399,11 +436,14 @@ export const Sider: typeof DefaultSider = ({ render }) => {
           </Box>
           <Button
             sx={{
-              background: "rgba(0,0,0,.5)",
+              background: "#475BE8",
               color: "primary.contrastText",
               textAlign: "center",
               borderRadius: 0,
               borderTop: "1px solid #ffffff1a",
+              '&:hover': {
+                background: "#1e36e8"
+              }
             }}
             fullWidth
             size="large"
@@ -419,7 +459,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
             top: "64px",
             left: "0px",
             borderRadius: "0 6px 6px 0",
-            bgcolor: "secondary.main",
+            bgcolor: "#475be8",
             zIndex: 1199,
             width: "36px",
           }}
@@ -432,6 +472,6 @@ export const Sider: typeof DefaultSider = ({ render }) => {
           </IconButton>
         </Box>
       </Box>
-    </>
+    </React.Fragment>
   );
 };

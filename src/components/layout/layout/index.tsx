@@ -5,6 +5,9 @@ import { Box } from "@pankod/refine-mui";
 import { Sider as DefaultSider } from "../sider";
 import { Header as DefaultHeader } from "../header";
 
+/**
+ * Page Layout
+ */
 export const Layout: React.FC<LayoutProps> = ({
   Sider,
   Header,
@@ -14,7 +17,6 @@ export const Layout: React.FC<LayoutProps> = ({
 }) => {
   const SiderToRender = Sider ?? DefaultSider;
   const HeaderToRender = Header ?? DefaultHeader;
-
   return (
     <Box display="flex" flexDirection="row">
       <SiderToRender />
