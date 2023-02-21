@@ -1,12 +1,11 @@
-// TODO : Move pagination values and property type menu items to constants
-
 import { useMemo } from 'react';
 import { useNavigate } from '@pankod/refine-react-router-v6';
 import { useTable } from '@pankod/refine-core';
 import { Box, Stack, Typography, TextField, Select, MenuItem } from '@pankod/refine-mui';
 import { Add } from '@mui/icons-material';
 
-import { PropertyCard, CustomButton } from 'components';
+import { PropertyCard, CustomButton, Spinner, ErrorText } from 'components';
+import { propertyTypes, pageCounts } from '../constants/index';
 
 /**
  * Sort Order Type
@@ -39,7 +38,10 @@ const AllProperties = () => {
     setFilters,
   } = useTable();
 
-  const allProperties = data?.data ?? [];
+  const allProperties = useMemo(
+    () => data?.data ?? [],
+    [data?.data]
+  );
 
   const currentPrice = useMemo<SortOrder>(
     () => sorter.find((item) => item.field === 'price')?.order,
@@ -56,17 +58,18 @@ const AllProperties = () => {
   };
 
   const currentFilterValues = useMemo<PropertyFilter>(() => {
-    const logicalFilters = filters.flatMap((item) => ('field' in item ? item : []));
-    return {
-      title: logicalFilters.find((item) => item.field === 'title')?.value || '',
-      propertyType: logicalFilters.find((item) => item.field === 'propertyType')?.value || '',
-    }
+    const logicalFilters = filters?.flatMap(
+      (item) => ('field' in item ? item : [])
+    );
+    const title = logicalFilters?.find((item) => item.field === 'title')?.value || '';
+    const propertyType = logicalFilters?.find((item) => item.field === 'propertyType')?.value || '';
+    return { title, propertyType };
   }, [filters]);
 
-  if (isLoading) return <Typography>Loading...</Typography>;
-  if (isError) return <Typography>Error...</Typography>;
+  if (isLoading) return <Spinner />;
+  if (isError) return <ErrorText />;
   return (
-    <Box>
+    <Box component="div">
       <Box mt="20px" sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
         <Stack direction="column" width="100%">
           <Typography fontSize={25} fontWeight={700} color="#11142d">
@@ -84,7 +87,7 @@ const AllProperties = () => {
                 variant="outlined"
                 color="info"
                 placeholder="Search by title"
-                value={currentFilterValues.title}
+                value={currentFilterValues?.title}
                 onChange={(e) => {
                   setFilters([{
                     field: 'title',
@@ -102,7 +105,7 @@ const AllProperties = () => {
                 required
                 inputProps={{ 'aria-label': 'Without label' }}
                 defaultValue=""
-                value={currentFilterValues.propertyType}
+                value={currentFilterValues?.propertyType}
                 onChange={(e) => {
                   setFilters([{
                     field: 'propertyType',
@@ -112,7 +115,7 @@ const AllProperties = () => {
                 }}
               >
                 <MenuItem value="">All</MenuItem>
-                {['Apartment', 'Villa', 'Farmhouse', 'Condos', 'Townhouse', 'Duplex', 'Studio', 'Chalet'].map((type, idx) => (
+                {propertyTypes.map((type: string, idx: number) => (
                   <MenuItem key={idx} value={type.toLowerCase()}>
                     {type}
                   </MenuItem>
@@ -134,16 +137,16 @@ const AllProperties = () => {
       <Box mt="20px" sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
         {allProperties?.map((property) => (
           <PropertyCard
-            key={property._id}
-            id={property._id}
-            title={property.title}
-            location={property.location}
-            price={property.price}
-            photo={property.photo}
+            key={property?._id}
+            id={property?._id}
+            title={property?.title}
+            location={property?.location}
+            price={property?.price}
+            photo={property?.photo}
           />
         ))}
       </Box>
-      {allProperties.length > 0 && (
+      {allProperties?.length > 0 && (
         <Box display="flex" gap={2} mt={3} flexWrap="wrap">
           <CustomButton
             title="Previous"
@@ -169,10 +172,12 @@ const AllProperties = () => {
             required
             inputProps={{ 'aria-label': 'Without label' }}
             defaultValue={10}
-            onChange={(e) => setPageSize(e.target.value ? Number(e.target.value) : 10)}
+            onChange={(e) => {
+              setPageSize(e.target.value ? Number(e.target.value) : 10);
+            }}
           >
-            {[10, 20, 30, 40, 50].map((size) => (
-              <MenuItem key={size} value={size}>
+            {pageCounts.map((size: number, idx: number) => (
+              <MenuItem key={idx} value={size}>
                 Show {size}
               </MenuItem>
             ))}

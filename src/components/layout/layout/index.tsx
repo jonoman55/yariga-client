@@ -18,16 +18,14 @@ export const Layout: React.FC<LayoutProps> = ({
   const SiderToRender = Sider ?? DefaultSider;
   const HeaderToRender = Header ?? DefaultHeader;
   return (
-    <Box display="flex" flexDirection="row">
+    <Box component="div" display="flex" flexDirection="row">
       <SiderToRender />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          flex: 1,
-          minHeight: "100vh",
-        }}
-      >
+      <Box sx={{
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+        minHeight: "100vh",
+      }}>
         <HeaderToRender />
         <Box
           component="main"

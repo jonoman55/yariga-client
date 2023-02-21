@@ -1,7 +1,7 @@
+import { useMemo } from "react";
 import { useGetIdentity, useOne } from "@pankod/refine-core";
-import { Box } from "@pankod/refine-mui";
 
-import { Profile } from 'components';
+import { ErrorBox, Profile, Spinner } from 'components';
 
 /**
  * Current User Profile
@@ -14,17 +14,20 @@ const MyProfile = () => {
     id: user?.userid,
   });
 
-  const myProfile = data?.data ?? [];
+  const myProfile = useMemo(
+    () => data?.data ?? {},
+    [data?.data]
+  );
 
-  if (isLoading) return <Box>Loading...</Box>
-  if (isError) return <Box>Error...</Box>
+  if (isLoading) return <Spinner />;
+  if (isError) return <ErrorBox />;
   return (
     <Profile
       type="My"
-      name={myProfile.name}
-      email={myProfile.email}
-      avatar={myProfile.avatar}
-      properties={myProfile.allProperties}
+      name={myProfile?.name}
+      email={myProfile?.email}
+      avatar={myProfile?.avatar}
+      properties={myProfile?.allProperties}
     />
   );
 };

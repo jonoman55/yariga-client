@@ -1,7 +1,8 @@
+import { useMemo } from "react";
 import { useList } from "@pankod/refine-core";
 import { Typography, Box, Stack } from "@pankod/refine-mui";
 
-import { PieChart, PropertyReferrals, TotalRevenue, PropertyCard } from "components";
+import { PieChart, PropertyReferrals, TotalRevenue, PropertyCard, Spinner, ErrorText } from "components";
 
 /**
  * Home Page
@@ -16,10 +17,13 @@ const Home = () => {
         },
     });
 
-    const latestProperties = data?.data ?? [];
+    const latestProperties = useMemo(
+        () => data?.data ?? [],
+        [data?.data]
+    );
 
-    if (isLoading) return <Typography>Loading...</Typography>;
-    if (isError) return <Typography>Something went wrong!</Typography>;
+    if (isLoading) return <Spinner />;
+    if (isError) return <ErrorText />;
     return (
         <Box component="div">
             <Typography fontSize={25} fontWeight={700} color="#11142D">
@@ -74,7 +78,7 @@ const Home = () => {
                     Latest Properties
                 </Typography>
                 <Box sx={{ mt: 2.5, display: "flex", flexWrap: "wrap", gap: 4 }}>
-                    {latestProperties.map((property) => (
+                    {latestProperties?.map((property) => (
                         <PropertyCard
                             key={property._id}
                             id={property._id}

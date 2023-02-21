@@ -31,12 +31,7 @@ export const Header: React.FC = () => {
   return shouldRenderHeader ? (
     <AppBar color="default" position="sticky" elevation={0} sx={{ background: "#FCFCFC" }}>
       <Toolbar>
-        <Stack
-          direction="row"
-          width="100%"
-          justifyContent="flex-end"
-          alignItems="center"
-        >
+        <Stack direction="row" width="100%" justifyContent="flex-end" alignItems="center">
           {/* <IconButton
             onClick={() => {
               setMode();
@@ -44,12 +39,7 @@ export const Header: React.FC = () => {
           >
             {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
           </IconButton> */}
-          <Stack
-            direction="row"
-            gap="16px"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Stack direction="row" gap="16px" alignItems="center" justifyContent="center">
             {user?.name ? (
               <Typography variant="subtitle2">
                 {user?.name}

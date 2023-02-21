@@ -83,7 +83,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
   const renderTreeView = (tree: ITreeMenu[], selectedKey: string) => {
     return tree.map((item: ITreeMenu) => {
       const { icon, label, route, name, children, parentName } = item;
-      
+
       const isOpen = open[route || ""] || false;
       const isSelected = route === selectedKey;
       const isNested = !(parentName === undefined);
@@ -127,13 +127,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
                     },
                   }}
                 >
-                  <ListItemIcon
-                    sx={{
-                      justifyContent: "center",
-                      minWidth: 36,
-                      color: "primary.contrastText",
-                    }}
-                  >
+                  <ListItemIcon sx={{ justifyContent: "center", minWidth: 36, color: "primary.contrastText" }}>
                     {icon ?? <ListOutlined />}
                   </ListItemIcon>
                   <ListItemText
@@ -164,7 +158,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
       return (
         <CanAccess
           key={route}
-          resource={name.toLowerCase()}
+          resource={name?.toLowerCase()}
           action="list"
           params={{ resource: item }}
         >
@@ -178,9 +172,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
               component={Link}
               to={route}
               selected={isSelected}
-              onClick={() => {
-                setOpened(false);
-              }}
+              onClick={() => setOpened(false)}
               sx={{
                 pl: isNested ? 4 : 2,
                 py: isNested ? 1.25 : 1,
@@ -304,13 +296,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
           width: "90%"
         }}
       >
-        <ListItemIcon
-          sx={{
-            justifyContent: "center",
-            minWidth: 36,
-            color: "#808191",
-          }}
-        >
+        <ListItemIcon sx={{ justifyContent: "center", minWidth: 36, color: "#808191" }}>
           <Logout />
         </ListItemIcon>
         <ListItemText
@@ -345,10 +331,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
   };
 
   const drawer = (
-    <MuiList disablePadding sx={{
-      mt: 1,
-      color: "#808191"
-    }}>
+    <MuiList disablePadding sx={{ mt: 1, color: "#808191" }}>
       {renderSider()}
     </MuiList>
   );
@@ -389,14 +372,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
             },
           }}
         >
-          <Box
-            sx={{
-              height: 64,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <Box sx={{ height: 64, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <RenderToTitle collapsed={false} />
           </Box>
           {drawer}
@@ -415,23 +391,10 @@ export const Sider: typeof DefaultSider = ({ render }) => {
           }}
           open
         >
-          <Box
-            sx={{
-              height: 64,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <Box sx={{ height: 64, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <RenderToTitle collapsed={collapsed} />
           </Box>
-          <Box
-            sx={{
-              flexGrow: 1,
-              overflowX: "hidden",
-              overflowY: "auto",
-            }}
-          >
+          <Box sx={{ flexGrow: 1, overflowX: "hidden", overflowY: "auto" }}>
             {drawer}
           </Box>
           <Button
@@ -464,10 +427,9 @@ export const Sider: typeof DefaultSider = ({ render }) => {
             width: "36px",
           }}
         >
-          <IconButton
-            sx={{ color: "#fff", width: "36px" }}
-            onClick={() => setOpened((prev) => !prev)}
-          >
+          <IconButton sx={{ color: "#fff", width: "36px" }} onClick={() => {
+            setOpened((prev) => !prev);
+          }}>
             <MenuRounded />
           </IconButton>
         </Box>

@@ -1,31 +1,4 @@
-// TODO : Move to new propertyReferralsInfo file and export from here
-
-import { PropertyReferral } from "interfaces/property";
-
-export const propertyReferralsInfo: PropertyReferral[] = [
-  {
-    title: 'Social Media',
-    percentage: 64,
-    color: '#6C5DD3',
-  },
-  {
-    title: 'Marketplace',
-    percentage: 40,
-    color: '#7FBA7A',
-  },
-  {
-    title: 'Websites',
-    percentage: 50,
-    color: '#FFCE73',
-  },
-  {
-    title: 'Digital Ads',
-    percentage: 80,
-    color: '#FFA2C0',
-  },
-  {
-    title: 'Others',
-    percentage: 15,
-    color: '#F45252',
-  },
-];
+export * from './page-counts';
+export * from './property-referrals';
+export * from './property-types';
+export * from './ratings';

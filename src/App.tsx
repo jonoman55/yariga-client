@@ -1,11 +1,7 @@
-// NOTE : YouTube Tutorial => https://youtu.be/k4lHXIzCEkM?t=10243
-// NOTE : Refine DOCS => https://refine.dev/docs
-// TODO : Implement Under Construction Page for Messages and Review Pages
+// DOCS : https://refine.dev/docs
 // TODO : Implement Messages and Reviews Pages
 // TODO : Go through project and covert components to styled components where necessary
-// TODO : Update login function to use axios instead of fetch
 // TODO : Add Theme Switch and custom MUI Theme
-// TODO : Add loading and error components
 
 import { Refine, AuthProvider } from "@pankod/refine-core";
 import {
@@ -42,6 +38,7 @@ import {
   CreateProperty,
   AgentProfile,
   EditProperty,
+  UnderConstruction,
 } from "pages";
 
 const axiosInstance = axios.create();
@@ -62,29 +59,24 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
  */
 const App = () => {
   const authProvider: AuthProvider = {
+    /**
+     * Google Login
+     */
     login: async ({ credential }: CredentialResponse) => {
       const profileObj = credential ? parseJwt(credential) : null;
       if (profileObj) {
-        const response = await fetch(
-          `${process.env.REACT_APP_SERVER_URL}/users`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name: profileObj.name,
-              email: profileObj.email,
-              avatar: profileObj.picture,
-            }),
-          },
-        );
-        const data = await response.json();
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users`, {
+          name: profileObj?.name,
+          email: profileObj?.email,
+          avatar: profileObj?.picture,
+        });
         if (response.status === 200) {
           localStorage.setItem(
             "user",
             JSON.stringify({
               ...profileObj,
-              avatar: profileObj.picture,
-              userid: data._id,
+              avatar: profileObj?.picture,
+              userid: response?.data?._id,
             }),
           );
         } else {
@@ -94,6 +86,9 @@ const App = () => {
       localStorage.setItem("token", `${credential}`);
       return Promise.resolve();
     },
+    /**
+     * Google Logout
+     */
     logout: () => {
       const token = localStorage.getItem("token");
       if (token && typeof window !== "undefined") {
@@ -106,7 +101,13 @@ const App = () => {
       }
       return Promise.resolve();
     },
+    /**
+     * Google Error Check
+     */
     checkError: () => Promise.resolve(),
+    /**
+     * Google Auth Check
+     */
     checkAuth: async () => {
       const token = localStorage.getItem("token");
       if (token) {
@@ -114,7 +115,13 @@ const App = () => {
       }
       return Promise.reject();
     },
+    /**
+     * Get Google User Permissions
+     */
     getPermissions: () => Promise.resolve(),
+    /**
+     * Get Google User Identity
+     */
     getUserIdentity: async () => {
       const user = localStorage.getItem("user");
       if (user) {
@@ -150,12 +157,12 @@ const App = () => {
             },
             {
               name: "reviews",
-              list: Home,
+              list: UnderConstruction,
               icon: <StarOutlineRounded />,
             },
             {
               name: "messages",
-              list: Home,
+              list: UnderConstruction,
               icon: <ChatBubbleOutline />,
             },
             {

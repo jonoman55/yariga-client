@@ -1,7 +1,8 @@
+import { useMemo } from 'react';
 import { useList } from '@pankod/refine-core';
 import { Box, Typography } from '@pankod/refine-mui';
 
-import { AgentCard } from 'components';
+import { AgentCard, ErrorBox, Spinner } from 'components';
 
 /**
  * Agents Page
@@ -11,10 +12,13 @@ const Agents = () => {
     resource: 'users'
   });
 
-  const allAgents = data?.data ?? [];
+  const allAgents = useMemo(
+    () => data?.data ?? [],
+    [data?.data]
+  );
 
-  if (isLoading) return <Box>Loading...</Box>
-  if (isError) return <Box>Error...</Box>
+  if (isLoading) return <Spinner />;
+  if (isError) return <ErrorBox />;
   return (
     <Box>
       <Typography fontSize={25} fontWeight={700} color="#11142d">
@@ -29,14 +33,14 @@ const Agents = () => {
           backgroundColor: '#fcfcfc'
         }}
       >
-        {allAgents.map((agent) => (
+        {allAgents?.map((agent) => (
           <AgentCard
-            key={agent._id}
-            id={agent._id}
-            name={agent.name}
-            email={agent.email}
-            avatar={agent.avatar}
-            noOfProperties={agent.allProperties.length}
+            key={agent?._id}
+            id={agent?._id}
+            name={agent?.name}
+            email={agent?.email}
+            avatar={agent?.avatar}
+            noOfProperties={agent?.allProperties?.length}
           />
         ))}
       </Box>

@@ -1,5 +1,3 @@
-// TODO : Move property type menu items to constants
-
 import {
   Box,
   Typography,
@@ -15,6 +13,7 @@ import {
 
 import CustomButton from "./CustomButton";
 import { FormProps } from "interfaces/common";
+import { propertyTypes } from "constants/index";
 
 /**
  * Form Component
@@ -28,7 +27,7 @@ const Form = ({
   onFinishHandler,
   propertyImage,
 }: FormProps) => (
-  <Box>
+  <Box component="div">
     <Typography fontSize={25} fontWeight={700} color="#11142d">
       {type} a Property
     </Typography>
@@ -115,14 +114,11 @@ const Form = ({
                 required: true,
               })}
             >
-              <MenuItem value="apartment">Apartment</MenuItem>
-              <MenuItem value="villa">Villa</MenuItem>
-              <MenuItem value="farmhouse">Farmhouse</MenuItem>
-              <MenuItem value="condos">Condos</MenuItem>
-              <MenuItem value="townhouse">Townhouse</MenuItem>
-              <MenuItem value="duplex">Duplex</MenuItem>
-              <MenuItem value="studio">Studio</MenuItem>
-              <MenuItem value="chalet">Chalet</MenuItem>
+              {propertyTypes.map((property: string, idx: number) => (
+                <MenuItem key={idx} value={property.toLowerCase()}>
+                  {property}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl>
@@ -167,19 +163,9 @@ const Form = ({
             {...register("location", { required: true })}
           />
         </FormControl>
-        <Stack
-          direction="column"
-          gap={1}
-          justifyContent="center"
-          mb={2}
-        >
+        <Stack direction="column" gap={1} justifyContent="center" mb={2}>
           <Stack direction="row" gap={2}>
-            <Typography
-              color="#11142d"
-              fontSize={16}
-              fontWeight={500}
-              my="10px"
-            >
+            <Typography color="#11142d" fontSize={16} fontWeight={500} my="10px">
               Property Photo
             </Typography>
             <Button
@@ -205,11 +191,7 @@ const Form = ({
               />
             </Button>
           </Stack>
-          <Typography
-            fontSize={14}
-            color="#808191"
-            sx={{ wordBreak: "break-all" }}
-          >
+          <Typography fontSize={14} color="#808191" sx={{ wordBreak: "break-all" }}>
             {propertyImage?.name}
           </Typography>
         </Stack>

@@ -20,7 +20,7 @@ export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
   const colorModeFromLocalStorage = localStorage.getItem("colorMode");
-  
+
   // NOTE : systemPreference code commented out until ThemeSwitch Button is implemented
   // const isSystemPreferenceDark = window?.matchMedia(
   //   "(prefers-color-scheme: dark)"

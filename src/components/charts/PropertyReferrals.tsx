@@ -15,12 +15,8 @@ interface ProgressBarProps {
  * ProgressBar
  */
 const ProgressBar = ({ title, percentage, color }: ProgressBarProps) => (
-  <Box width="100%">
-    <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-    >
+  <Box component="div" width="100%">
+    <Stack direction="row" alignItems="center" justifyContent="space-between">
       <Typography fontSize={16} fontWeight={500} color="#11142d">
         {title}
       </Typography>

@@ -1,8 +1,8 @@
+import { useMemo } from 'react';
 import { useParams } from '@pankod/refine-react-router-v6';
 import { useOne } from "@pankod/refine-core"
-import { Box } from "@pankod/refine-mui";
 
-import { Profile } from 'components';
+import { ErrorBox, Profile, Spinner } from 'components';
 
 /**
  * Agent Profile Page
@@ -15,17 +15,20 @@ const AgentProfile = () => {
     id: id as string
   });
 
-  const myProfile = data?.data ?? [];
+  const myProfile = useMemo(
+    () => data?.data ?? {},
+    [data?.data]
+  );
 
-  if (isLoading) return <Box>Loading...</Box>
-  if (isError) return <Box>Error...</Box>
+  if (isLoading) return <Spinner />;
+  if (isError) return <ErrorBox />;
   return (
     <Profile
       type="Agent"
-      name={myProfile.name}
-      email={myProfile.email}
-      avatar={myProfile.avatar}
-      properties={myProfile.allProperties}
+      name={myProfile?.name}
+      email={myProfile?.email}
+      avatar={myProfile?.avatar}
+      properties={myProfile?.allProperties}
     />
   );
 };
