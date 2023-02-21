@@ -1,4 +1,5 @@
 // TODO : Expand user model on server to accept user phone number and address
+// TODO : Memoize user avatar image
 
 import { Box, Stack, Typography } from "@pankod/refine-mui";
 import { Email, Phone, Place } from "@mui/icons-material";

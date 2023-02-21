@@ -1,8 +1,8 @@
 // TODO : Implement Google Maps API for property location
-// TODO : Implement rating system and move rating values to constants
 // TODO : Add a link to the agents avatar that navigates them to their profile
 // TODO : Populate agents phone number and location from db
 // TODO : Add edit button to card to populate phone number and location details
+// TODO : Implement functional rating system 
 
 /* eslint-disable no-restricted-globals */
 import { useMemo } from 'react';
@@ -31,9 +31,10 @@ const PropertyDetails = () => {
     [data?.data]
   );
 
-  const creatorAvatar = useMemo(() => checkImage(propertyDetails?.creator?.avatar)
-    ? propertyDetails?.creator?.avatar
-    : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png",
+  const creatorAvatar = useMemo(
+    () => checkImage(propertyDetails?.creator?.avatar)
+      ? propertyDetails?.creator?.avatar
+      : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png",
     [propertyDetails?.creator?.avatar]
   );
 

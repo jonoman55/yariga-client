@@ -44,24 +44,13 @@ export const Login: React.FC = () => {
 
   return (
     <Box component="div" sx={{ backgroundColor: '#FCFCFC' }}>
-      <Container
-        component="main"
-        maxWidth="xs"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          height: "100vh",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+      <Container component="main" maxWidth="xs" sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        height: "100vh"
+      }}>
+        <Box sx={{ display: "flex", justifyContent: "center", flexDirection: "column",  alignItems: "center" }}>
           <Box component="div">
             <Box component="img" src={yariga} alt="Yariga Logo" />
           </Box>
