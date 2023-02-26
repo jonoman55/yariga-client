@@ -2,7 +2,9 @@
 import Profile from "./common/Profile";
 import PropertyCard from "./common/PropertyCard";
 import CustomButton from "./common/CustomButton";
+import Form from "./common/Form";
 import Spinner from "./common/Spinner";
+import Image from "./common/Image";
 import { ErrorBox, ErrorText } from "./common/Errors";
 
 // charts
@@ -28,4 +30,6 @@ export {
     Spinner,
     ErrorBox,
     ErrorText,
+    Image,
+    Form,
 };

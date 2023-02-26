@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useGetIdentity, useNotification } from '@pankod/refine-core';
 import { FieldValues, useForm } from '@pankod/refine-react-hook-form';
 
-import Form from 'components/common/Form';
+import { Form } from 'components';
 import { PropertyImage } from 'interfaces/property';
 
 /**

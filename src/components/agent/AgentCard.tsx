@@ -1,13 +1,12 @@
-// TODO : Debug why Google avatar images aren't populating on inital load
-
+import { useMemo } from "react";
 import { Link } from "@pankod/refine-react-router-v6";
 import { useGetIdentity } from "@pankod/refine-core";
 import { Box, Stack, Typography } from "@pankod/refine-mui";
 import { EmailOutlined, LocationCity, Phone, Place } from "@mui/icons-material";
 
 import { AgentCardProp, InfoBarProps } from "interfaces/agent";
+import { Image } from "components";
 import { checkImage } from "utils";
-import { useMemo } from "react";
 
 /**
  * Info Bar
@@ -54,14 +53,24 @@ const AgentCard = ({ id, name, email, avatar, noOfProperties }: AgentCardProp) =
         },
       }}
     >
-      <Box
+      {/* New Image Component */}
+      <Image
+        src={userAvatar}
+        placeholderImg={"https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"}
+        alt="user"
+        width={90}
+        height={90}
+        style={{ borderRadius: "8rem", objectFit: "cover" }}
+      />
+      {/* Old Image Component */}
+      {/* <Box
         component="img"
         src={userAvatar}
         alt="user"
         width={90}
         height={90}
         sx={{ borderRadius: 8, objectFit: "cover" }}
-      />
+      /> */}
       <Stack direction="column" justifyContent="space-between" flex={1} gap={{ xs: 4, sm: 2 }}>
         <Stack gap={2} direction="row" flexWrap="wrap" alignItems="center">
           <Typography fontSize={22} fontWeight={600} color="#11142d">

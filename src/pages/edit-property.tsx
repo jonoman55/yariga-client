@@ -1,19 +1,17 @@
-// TODO : Add code to fetch property image from db
-
-import { useState } from 'react';
-import { useGetIdentity, useNotification } from '@pankod/refine-core';
+import { useMemo, useState } from 'react';
+import { useGetIdentity, useNotification, useShow } from '@pankod/refine-core';
 import { FieldValues, useForm } from '@pankod/refine-react-hook-form';
 
-import Form from 'components/common/Form';
+import { Form, ErrorBox, Spinner } from 'components';
 import { PropertyImage } from 'interfaces/property';
 
 /**
  * Initial Image State
  */
-const initalImgState: PropertyImage = {
-  name: '',
-  url: ''
-};
+// const initalImgState: PropertyImage = {
+//   name: '',
+//   url: ''
+// };
 
 /**
  * Edit Property Form
@@ -21,14 +19,46 @@ const initalImgState: PropertyImage = {
 const EditProperty = () => {
   const { open } = useNotification();
   const { data: user } = useGetIdentity();
+  const { queryResult } = useShow();
 
-  const [propertyImage, setPropertyImage] = useState<PropertyImage>(initalImgState);
+  const {
+    data: imgResult,
+    isLoading,
+    isError
+  } = queryResult;
+
+  const propertyDetails = useMemo(
+    () => imgResult?.data ?? {},
+    [imgResult?.data]
+  );
+
+  const imageUrl = useMemo<string>(
+    () => propertyDetails.photo
+      ? propertyDetails.photo
+      : '',
+    [propertyDetails?.photo]
+  );
+
+  const imageName = useMemo<string>(
+    () => propertyDetails?.title && propertyDetails?.title.includes(' ')
+      ? `${propertyDetails?.title?.replace(' ', '_')}.${propertyDetails?.photo?.split('.').pop()}`
+      : '',
+    [propertyDetails?.photo, propertyDetails?.title]
+  );
+
+  const [propertyImage, setPropertyImage] = useState<PropertyImage>({
+    url: imageUrl, 
+    name: imageName,
+  });
 
   const {
     refineCore: { onFinish, formLoading },
     register,
     handleSubmit
   } = useForm();
+
+  if (isLoading) return <Spinner />;
+  if (isError) return <ErrorBox />;
 
   const handleImageChange = (file: File) => {
     const reader = (readFile: File) => new Promise<string>((resolve, _reject) => {

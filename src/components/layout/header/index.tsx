@@ -1,4 +1,3 @@
-// TODO : Add a link to the users avatar that navigates them to their profile
 // TODO : Clean up theme switch code or implement mui theme 
 // NOTE : The theme switch IconButton is commented out - light theme only currently
 
